@@ -43,6 +43,25 @@ jobs:
 **Optional file:**
 - `.github/SECURITY_RULES.md` - Custom security rules for your project
 
+## Custom Security Rules
+
+Each repository can define its own security rules by creating `.github/SECURITY_RULES.md`. The AI will consider these rules during analysis.
+
+**Example `.github/SECURITY_RULES.md`:**
+
+```markdown
+# Security Rules
+
+## Project-Specific Rules
+- Never expose API keys in logs or responses
+- All user passwords must be hashed with bcrypt
+- Admin endpoints must require authentication header
+
+## Allowed Patterns (Ignore)
+- CORS "*" is intentional for development environment
+- SQLite is acceptable for this project (not production-scale)
+```
+
 ## Severity Levels
 
 | Level | Emoji | Action |

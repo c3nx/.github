@@ -137,7 +137,7 @@ jobs:
 
           import time
 
-          MAX_RETRIES = 3
+          MAX_RETRIES = 1
           RETRY_DELAY = 35  # seconds
           result = None
 

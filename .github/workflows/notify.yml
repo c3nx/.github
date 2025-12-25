@@ -1,0 +1,33 @@
+name: Pushover Notify
+
+on:
+  workflow_call:
+    inputs:
+      status:
+        description: 'Job status (success, failure, cancelled)'
+        required: true
+        type: string
+      repo_name:
+        description: 'Repository name for notification title'
+        required: false
+        type: string
+
+jobs:
+  notify:
+    name: Send Notification
+    runs-on: self-hosted
+    steps:
+      - name: Send Pushover Notification
+        run: |
+          REPO="${{ inputs.repo_name || github.event.repository.name }}"
+          STATUS="${{ inputs.status }}"
+
+          # Set priority based on status (1 = high for failures)
+          PRIORITY=0
+          [[ "$STATUS" == "failure" ]] && PRIORITY=1
+
+          curl -s -F "token=$PUSHOVER_TOKEN" -F "user=$PUSHOVER_USER" \
+               -F "title=CI $STATUS: $REPO" \
+               -F "message=${{ github.ref_name }} - $(date +%H:%M)" \
+               -F "priority=$PRIORITY" \
+               https://api.pushover.net/1/messages.json
